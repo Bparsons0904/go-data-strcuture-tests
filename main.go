@@ -12,7 +12,7 @@ import (
 )
 
 const testArrayLength int = 50000
-const numberOfTests int = 10
+const numberOfTests int = 100
 
 var testCreateOrders [][]int
 var testRemoveOrders [][]int
