@@ -25,6 +25,7 @@ func main() {
 
 	testUnsortedArray()
 	testUnsortedSlice()
+	testLinkedList()
 }
 
 type Statistics struct {
