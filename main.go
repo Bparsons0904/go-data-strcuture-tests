@@ -5,12 +5,13 @@ import (
 	"math"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/go-faker/faker/v4"
 )
 
-const testArrayLength int = 10000
+const testArrayLength int = 50000
 const numberOfTests int = 100
 
 var testCreateOrder []int
@@ -23,11 +24,40 @@ func main() {
 	fmt.Printf("\n%-30s %-10s %-10s %-10s %-10s %-10s\n", "Type", "Mean", "Min", "Max", "Median", "Std Dev")
 	fmt.Println(strings.Repeat("-", 82))
 
-	testUnsortedArray()
-	testUnsortedSlice()
-	testLinkedList()
-	testDoubleLinkedList()
-	testMap()
+	wg := &sync.WaitGroup{}
+	wg.Add(6)
+
+	go func() {
+		testUnsortedArray()
+		wg.Done()
+	}()
+
+	go func() {
+		testUnsortedSlice()
+		wg.Done()
+	}()
+
+	go func() {
+		testLinkedList()
+		wg.Done()
+	}()
+
+	go func() {
+		testDoubleLinkedList()
+		wg.Done()
+	}()
+
+	go func() {
+		testMap()
+		wg.Done()
+	}()
+
+	go func() {
+		testBinaryTree()
+		wg.Done()
+	}()
+
+	wg.Wait()
 }
 
 type Statistics struct {
@@ -90,29 +120,38 @@ func combineStatistics(createStats, removeStats []time.Duration) Statistics {
 	return getStatistics(combinedDurations)
 }
 
+func formatDuration(d time.Duration) string {
+	microseconds := d.Microseconds()
+	if microseconds >= 10000 {
+		return fmt.Sprintf("%.2fms", d.Seconds()*1000)
+	}
+	return fmt.Sprintf("%dµs", microseconds)
+}
+
 func printStatistics(label string, createStats Statistics, removeStats Statistics, combinedStats Statistics) {
-	fmt.Printf("%-30s %-10v %-10v %-10v %-10v %-10.2f\n",
+	fmt.Printf("%-30s %-10s %-10s %-10s %-10s %-10.2f\n",
 		label+" Create",
-		createStats.mean.Microseconds(),
-		createStats.min.Microseconds(),
-		createStats.max.Microseconds(),
-		createStats.median.Microseconds(),
+		formatDuration(createStats.mean),
+		formatDuration(createStats.min),
+		formatDuration(createStats.max),
+		formatDuration(createStats.median),
 		createStats.standardDeviation)
 
-	fmt.Printf("%-30s %-10v %-10v %-10v %-10v %-10.2f\n",
+	fmt.Printf("%-30s %-10s %-10s %-10s %-10s %-10.2f\n",
 		label+" Remove",
-		removeStats.mean.Microseconds(),
-		removeStats.min.Microseconds(),
-		removeStats.max.Microseconds(),
-		removeStats.median.Microseconds(),
+		formatDuration(removeStats.mean),
+		formatDuration(removeStats.min),
+		formatDuration(removeStats.max),
+		formatDuration(removeStats.median),
 		removeStats.standardDeviation)
 
-	fmt.Printf("%-30s %-10v %-10v %-10v %-10v %-10.2f\n",
+	fmt.Printf("\033[1m%-30s %-10s %-10s %-10s %-10s %-10.2f\033[0m\n",
 		label+" Combined",
-		combinedStats.mean.Microseconds(),
-		combinedStats.min.Microseconds(),
-		combinedStats.max.Microseconds(),
-		combinedStats.median.Microseconds(),
+		formatDuration(combinedStats.mean),
+		formatDuration(combinedStats.min),
+		formatDuration(combinedStats.max),
+		formatDuration(combinedStats.median),
 		combinedStats.standardDeviation)
 
+	fmt.Println(strings.Repeat("-", 82))
 }
