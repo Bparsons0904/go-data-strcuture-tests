@@ -55,7 +55,8 @@ func testLinkedList() {
 
 	linkedListCreateStats := getStatistics(createTimes[:])
 	linkedListRemoveStats := getStatistics(removeTimes[:])
-	printStatistics("Linked List", linkedListCreateStats, linkedListRemoveStats)
+	linkedListCombinedStats := combineStatistics(createTimes[:], removeTimes[:])
+	printStatistics("Linked List", linkedListCreateStats, linkedListRemoveStats, linkedListCombinedStats)
 }
 
 func testLinkedListCreate() (time.Duration, *LinkedList) {

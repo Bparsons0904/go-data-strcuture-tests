@@ -15,7 +15,8 @@ func testUnsortedSlice() {
 
 	unsortedCreateStats := getStatistics(createTimes[:])
 	unsortedRemoveStats := getStatistics(removeTimes[:])
-	printStatistics("Unsorted Slice", unsortedCreateStats, unsortedRemoveStats)
+	unsortedCombinedStats := combineStatistics(createTimes[:], removeTimes[:])
+	printStatistics("Unsorted Slice", unsortedCreateStats, unsortedRemoveStats, unsortedCombinedStats)
 }
 
 func testUnsortedSliceCreate() (time.Duration, []int) {

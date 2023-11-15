@@ -26,6 +26,7 @@ func main() {
 	testUnsortedArray()
 	testUnsortedSlice()
 	testLinkedList()
+	testDoubleLinkedList()
 }
 
 type Statistics struct {
@@ -80,10 +81,15 @@ func calculateMean(durations []time.Duration) time.Duration {
 	return sum / time.Duration(len(durations))
 }
 
-func printStatistics(label string, createStats Statistics, removeStats Statistics) {
-	// Header
+func combineStatistics(createStats, removeStats []time.Duration) Statistics {
+	var combinedDurations []time.Duration
+	for i := 0; i < len(createStats); i++ {
+		combinedDurations = append(combinedDurations, createStats[i]+removeStats[i])
+	}
+	return getStatistics(combinedDurations)
+}
 
-	// Data row
+func printStatistics(label string, createStats Statistics, removeStats Statistics, combinedStats Statistics) {
 	fmt.Printf("%-30s %-10v %-10v %-10v %-10v %-10.2f\n",
 		label+" Create",
 		createStats.mean.Microseconds(),
@@ -99,4 +105,13 @@ func printStatistics(label string, createStats Statistics, removeStats Statistic
 		removeStats.max.Microseconds(),
 		removeStats.median.Microseconds(),
 		removeStats.standardDeviation)
+
+	fmt.Printf("%-30s %-10v %-10v %-10v %-10v %-10.2f\n",
+		label+" Combined",
+		combinedStats.mean.Microseconds(),
+		combinedStats.min.Microseconds(),
+		combinedStats.max.Microseconds(),
+		combinedStats.median.Microseconds(),
+		combinedStats.standardDeviation)
+
 }
