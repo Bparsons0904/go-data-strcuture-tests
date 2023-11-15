@@ -50,9 +50,9 @@ func testDoubleLinkedList() {
 	var removeTimes [numberOfTests]time.Duration
 
 	for i := 0; i < numberOfTests; i++ {
-		createTime, doubleLinkedList := testDoubleLinkedListCreate()
+		createTime, doubleLinkedList := testDoubleLinkedListCreate(i)
 		createTimes[i] = createTime
-		removeTime := testDoubleLinkedListRemove(doubleLinkedList)
+		removeTime := testDoubleLinkedListRemove(doubleLinkedList, i)
 		removeTimes[i] = removeTime
 	}
 
@@ -62,18 +62,18 @@ func testDoubleLinkedList() {
 	printStatistics("Double Linked List", doubleLinkedListCreateStats, doubleLinkedListRemoveStats, doubleLinkedListCombinedStats)
 }
 
-func testDoubleLinkedListCreate() (time.Duration, *DoubleLinkedList) {
+func testDoubleLinkedListCreate(i int) (time.Duration, *DoubleLinkedList) {
 	startTime := time.Now()
 	doubleLinkedList := &DoubleLinkedList{}
-	for _, value := range testCreateOrder {
+	for _, value := range testCreateOrders[i] {
 		doubleLinkedList.Append(value)
 	}
 	return time.Since(startTime), doubleLinkedList
 }
 
-func testDoubleLinkedListRemove(doubleLinkedList *DoubleLinkedList) time.Duration {
+func testDoubleLinkedListRemove(doubleLinkedList *DoubleLinkedList, i int) time.Duration {
 	startTime := time.Now()
-	for _, value := range testRemoveOrder {
+	for _, value := range testRemoveOrders[i] {
 		doubleLinkedList.Remove(value)
 	}
 	return time.Since(startTime)

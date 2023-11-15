@@ -7,9 +7,9 @@ func testUnsortedArray() {
 	var removeTimes [numberOfTests]time.Duration
 
 	for i := 0; i < numberOfTests; i++ {
-		createTime, array := testUnsortedArrayCreate()
+		createTime, array := testUnsortedArrayCreate(i)
 		createTimes[i] = createTime
-		removeTime := testUnSortedArrayRemove(array)
+		removeTime := testUnSortedArrayRemove(array, i)
 		removeTimes[i] = removeTime
 	}
 
@@ -19,19 +19,19 @@ func testUnsortedArray() {
 	printStatistics("Unsorted Array", unsortedCreateStats, unsortedRemoveStats, unsortedCombinedStats)
 }
 
-func testUnsortedArrayCreate() (time.Duration, *[testArrayLength]int) {
+func testUnsortedArrayCreate(j int) (time.Duration, *[testArrayLength]int) {
 	startTime := time.Now()
 	var testArray [testArrayLength]int
 	for i := 0; i < testArrayLength; i++ {
-		testArray[i] = testCreateOrder[i]
+		testArray[i] = testCreateOrders[j][i]
 	}
 	return time.Since(startTime), &testArray
 }
 
-func testUnSortedArrayRemove(array *[testArrayLength]int) time.Duration {
+func testUnSortedArrayRemove(array *[testArrayLength]int, j int) time.Duration {
 	startTime := time.Now()
 
-	for _, value := range testRemoveOrder {
+	for _, value := range testRemoveOrders[j] {
 		removeIndex := -1
 		for i, v := range array {
 			if v == value {

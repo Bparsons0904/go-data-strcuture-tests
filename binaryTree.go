@@ -26,9 +26,9 @@ func testBinaryTree() {
 	var removeTimes [numberOfTests]time.Duration
 
 	for i := 0; i < numberOfTests; i++ {
-		createTime, tree := testBinaryTreeCreate()
+		createTime, tree := testBinaryTreeCreate(i)
 		createTimes[i] = createTime
-		removeTime := testBinaryTreeRemove(tree)
+		removeTime := testBinaryTreeRemove(tree, i)
 		removeTimes[i] = removeTime
 	}
 
@@ -38,18 +38,18 @@ func testBinaryTree() {
 	printStatistics("Binary Tree", binaryTreeCreateStats, binaryTreeRemoveStats, binaryTreeCombinedStats)
 }
 
-func testBinaryTreeCreate() (time.Duration, *BinaryTree) {
+func testBinaryTreeCreate(i int) (time.Duration, *BinaryTree) {
 	startTime := time.Now()
 	tree := &BinaryTree{}
-	for _, value := range testCreateOrder {
+	for _, value := range testCreateOrders[i] {
 		tree.Insert(value)
 	}
 	return time.Since(startTime), tree
 }
 
-func testBinaryTreeRemove(tree *BinaryTree) time.Duration {
+func testBinaryTreeRemove(tree *BinaryTree, i int) time.Duration {
 	startTime := time.Now()
-	for _, value := range testRemoveOrder {
+	for _, value := range testRemoveOrders[i] {
 		tree.Delete(value)
 	}
 	return time.Since(startTime)

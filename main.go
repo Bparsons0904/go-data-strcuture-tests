@@ -12,14 +12,18 @@ import (
 )
 
 const testArrayLength int = 50000
-const numberOfTests int = 100
+const numberOfTests int = 10
 
-var testCreateOrder []int
-var testRemoveOrder []int
+var testCreateOrders [][]int
+var testRemoveOrders [][]int
 
 func main() {
-	testCreateOrder, _ = faker.RandomInt(testArrayLength)
-	testRemoveOrder, _ = faker.RandomInt(testArrayLength)
+	for i := 0; i < numberOfTests; i++ {
+		testCreateOrder, _ := faker.RandomInt(testArrayLength)
+		testRemoveOrder, _ := faker.RandomInt(testArrayLength)
+		testCreateOrders = append(testCreateOrders, testCreateOrder)
+		testRemoveOrders = append(testRemoveOrders, testRemoveOrder)
+	}
 
 	fmt.Printf("\n%-30s %-10s %-10s %-10s %-10s %-10s\n", "Type", "Mean", "Min", "Max", "Median", "Std Dev")
 	fmt.Println(strings.Repeat("-", 82))

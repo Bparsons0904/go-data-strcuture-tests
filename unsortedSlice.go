@@ -7,9 +7,9 @@ func testUnsortedSlice() {
 	var removeTimes [numberOfTests]time.Duration
 
 	for i := 0; i < numberOfTests; i++ {
-		createTime, slice := testUnsortedSliceCreate()
+		createTime, slice := testUnsortedSliceCreate(i)
 		createTimes[i] = createTime
-		removeTime := testUnsortedSliceRemove(slice)
+		removeTime := testUnsortedSliceRemove(slice, i)
 		removeTimes[i] = removeTime
 	}
 
@@ -19,19 +19,19 @@ func testUnsortedSlice() {
 	printStatistics("Unsorted Slice", unsortedCreateStats, unsortedRemoveStats, unsortedCombinedStats)
 }
 
-func testUnsortedSliceCreate() (time.Duration, []int) {
+func testUnsortedSliceCreate(j int) (time.Duration, []int) {
 	startTime := time.Now()
 	testSlice := make([]int, testArrayLength)
 	for i := 0; i < testArrayLength; i++ {
-		testSlice[i] = testCreateOrder[i]
+		testSlice[i] = testCreateOrders[j][i]
 	}
 	return time.Since(startTime), testSlice
 }
 
-func testUnsortedSliceRemove(slice []int) time.Duration {
+func testUnsortedSliceRemove(slice []int, j int) time.Duration {
 	startTime := time.Now()
 
-	for _, value := range testRemoveOrder {
+	for _, value := range testRemoveOrders[j] {
 		for i, v := range slice {
 			if v == value {
 				slice = append(slice[:i], slice[i+1:]...)
