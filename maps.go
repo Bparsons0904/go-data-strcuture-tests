@@ -21,7 +21,8 @@ func testMap() {
 
 func testMapCreate(i int) (time.Duration, map[int]int) {
 	startTime := time.Now()
-	testMap := make(map[int]int)
+	testMap := make(map[int]int, testArrayLength)
+
 	for i, value := range testCreateOrders[i] {
 		testMap[i] = value
 	}
