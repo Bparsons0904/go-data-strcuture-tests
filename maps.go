@@ -20,19 +20,23 @@ func testMap() {
 }
 
 func testMapCreate(i int) (time.Duration, map[int]int) {
-	startTime := time.Now()
+	var addTime time.Duration
 	testMap := make(map[int]int, testArrayLength)
 
 	for i, value := range testCreateOrders[i] {
+		startTime := time.Now()
 		testMap[i] = value
+		addTime += time.Since(startTime)
 	}
-	return time.Since(startTime), testMap
+	return addTime, testMap
 }
 
 func testMapRemove(testMap map[int]int, i int) time.Duration {
-	startTime := time.Now()
+	var removeTime time.Duration
 	for _, value := range testRemoveOrders[i] {
+		startTime := time.Now()
 		delete(testMap, value)
+		removeTime += time.Since(startTime)
 	}
-	return time.Since(startTime)
+	return removeTime
 }

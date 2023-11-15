@@ -39,20 +39,24 @@ func testBinaryTree() {
 }
 
 func testBinaryTreeCreate(i int) (time.Duration, *BinaryTree) {
-	startTime := time.Now()
+	var totalTime time.Duration
 	tree := &BinaryTree{}
 	for _, value := range testCreateOrders[i] {
+		startTime := time.Now()
 		tree.Insert(value)
+		totalTime += time.Since(startTime)
 	}
-	return time.Since(startTime), tree
+	return totalTime, tree
 }
 
 func testBinaryTreeRemove(tree *BinaryTree, i int) time.Duration {
-	startTime := time.Now()
+	var totalTime time.Duration
 	for _, value := range testRemoveOrders[i] {
+		startTime := time.Now()
 		tree.Delete(value)
+		totalTime += time.Since(startTime)
 	}
-	return time.Since(startTime)
+	return totalTime
 }
 
 func (node *BinaryTreeNode) insert(newNode *BinaryTreeNode) {

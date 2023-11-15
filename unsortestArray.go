@@ -20,17 +20,18 @@ func testUnsortedArray() {
 }
 
 func testUnsortedArrayCreate(j int) (time.Duration, *[testArrayLength]int) {
-	startTime := time.Now()
+	var addTime time.Duration
 	var testArray [testArrayLength]int
 	for i := 0; i < testArrayLength; i++ {
+		startTime := time.Now()
 		testArray[i] = testCreateOrders[j][i]
+		addTime += time.Since(startTime)
 	}
-	return time.Since(startTime), &testArray
+	return addTime, &testArray
 }
 
 func testUnSortedArrayRemove(array *[testArrayLength]int, j int) time.Duration {
-	startTime := time.Now()
-
+	var removeTime time.Duration
 	for _, value := range testRemoveOrders[j] {
 		removeIndex := -1
 		for i, v := range array {
@@ -41,12 +42,14 @@ func testUnSortedArrayRemove(array *[testArrayLength]int, j int) time.Duration {
 		}
 
 		if removeIndex != -1 {
+			startTime := time.Now()
 			for i := removeIndex; i < testArrayLength-1; i++ {
 				array[i] = array[i+1]
 			}
 			array[testArrayLength-1] = 0
+			removeTime += time.Since(startTime)
 		}
 	}
 
-	return time.Since(startTime)
+	return removeTime
 }

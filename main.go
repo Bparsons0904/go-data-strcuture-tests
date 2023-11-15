@@ -11,7 +11,7 @@ import (
 	"github.com/go-faker/faker/v4"
 )
 
-const testArrayLength int = 50000
+const testArrayLength int = 10000
 const numberOfTests int = 100
 
 var testCreateOrders [][]int

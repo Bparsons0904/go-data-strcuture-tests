@@ -24,22 +24,26 @@ func (linkedList *LinkedList) Append(value int) {
 	current.Next = newNode
 }
 
-func (linkedList *LinkedList) Remove(value int) {
+func (linkedList *LinkedList) Remove(value int) time.Duration {
+	startTime := time.Now()
+
 	if linkedList.Head == nil {
-		return
+		return time.Since(startTime)
 	}
 	if linkedList.Head.Value == value {
 		linkedList.Head = linkedList.Head.Next
-		return
+		return time.Since(startTime)
 	}
 	current := linkedList.Head
 	for current.Next != nil {
 		if current.Next.Value == value {
+			startTime = time.Now()
 			current.Next = current.Next.Next
-			return
+			return time.Since(startTime)
 		}
 		current = current.Next
 	}
+	return time.Since(startTime)
 }
 
 func testLinkedList() {
@@ -60,18 +64,21 @@ func testLinkedList() {
 }
 
 func testLinkedListCreate(i int) (time.Duration, *LinkedList) {
-	startTime := time.Now()
+	var totalTime time.Duration
 	linkedList := &LinkedList{}
 	for _, value := range testCreateOrders[i] {
+		startTime := time.Now()
 		linkedList.Append(value)
+		totalTime += time.Since(startTime)
 	}
-	return time.Since(startTime), linkedList
+	return totalTime, linkedList
 }
 
 func testLinkedListRemove(linkedList *LinkedList, i int) time.Duration {
-	startTime := time.Now()
 	for _, value := range testRemoveOrders[i] {
-		linkedList.Remove(value)
+		removeTime := linkedList.Remove(value)
+		return removeTime
 	}
-	return time.Since(startTime)
+
+	return 0
 }

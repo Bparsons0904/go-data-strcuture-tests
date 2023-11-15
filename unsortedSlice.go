@@ -20,25 +20,28 @@ func testUnsortedSlice() {
 }
 
 func testUnsortedSliceCreate(j int) (time.Duration, []int) {
-	startTime := time.Now()
+	var totalTime time.Duration
 	testSlice := make([]int, testArrayLength)
 	for i := 0; i < testArrayLength; i++ {
+		startTime := time.Now()
 		testSlice[i] = testCreateOrders[j][i]
+		totalTime += time.Since(startTime)
 	}
-	return time.Since(startTime), testSlice
+	return totalTime, testSlice
 }
 
 func testUnsortedSliceRemove(slice []int, j int) time.Duration {
-	startTime := time.Now()
-
+	var totalTime time.Duration
 	for _, value := range testRemoveOrders[j] {
 		for i, v := range slice {
+			startTime := time.Now()
 			if v == value {
 				slice = append(slice[:i], slice[i+1:]...)
+				totalTime += time.Since(startTime)
 				break
 			}
 		}
 	}
 
-	return time.Since(startTime)
+	return totalTime
 }

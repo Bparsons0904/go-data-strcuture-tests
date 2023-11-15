@@ -25,10 +25,11 @@ func (doubleLinkedList *DoubleLinkedList) Append(value int) {
 	doubleLinkedList.Tail = newNode
 }
 
-func (doubleLinkedList *DoubleLinkedList) Remove(value int) {
+func (doubleLinkedList *DoubleLinkedList) Remove(value int) time.Duration {
 	current := doubleLinkedList.Head
 	for current != nil {
 		if current.Value == value {
+			startTime := time.Now()
 			if current.Prev != nil {
 				current.Prev.Next = current.Next
 			} else {
@@ -39,10 +40,12 @@ func (doubleLinkedList *DoubleLinkedList) Remove(value int) {
 			} else {
 				doubleLinkedList.Tail = current.Prev
 			}
-			return
+			return time.Since(startTime)
 		}
+
 		current = current.Next
 	}
+	return 0
 }
 
 func testDoubleLinkedList() {
@@ -72,9 +75,9 @@ func testDoubleLinkedListCreate(i int) (time.Duration, *DoubleLinkedList) {
 }
 
 func testDoubleLinkedListRemove(doubleLinkedList *DoubleLinkedList, i int) time.Duration {
-	startTime := time.Now()
 	for _, value := range testRemoveOrders[i] {
-		doubleLinkedList.Remove(value)
+		removeTime := doubleLinkedList.Remove(value)
+		return removeTime
 	}
-	return time.Since(startTime)
+	return 0
 }
